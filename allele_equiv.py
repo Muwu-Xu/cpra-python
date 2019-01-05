@@ -1,12 +1,13 @@
 #allele equivalences, check out all the antigen2 
 import pandas as pd
+import time
 
-
-equiv_A = pd.read_csv("/Users/muwuxu/Documents/Loran_Gragert/cpra_python/data/table.equiv.A.csv")
-equiv_B = pd.read_csv("/Users/muwuxu/Documents/Loran_Gragert/cpra_python/data/table.equiv.B.csv")
-equiv_C = pd.read_csv("/Users/muwuxu/Documents/Loran_Gragert/cpra_python/data/table.equiv.C.csv")
-equiv_Q = pd.read_csv("/Users/muwuxu/Documents/Loran_Gragert/cpra_python/data/table.equiv.Q.csv")
-equiv_R = pd.read_csv("/Users/muwuxu/Documents/Loran_Gragert/cpra_python/data/table.equiv.R.csv")
+t0 = time.time()
+equiv_A = pd.read_csv("./data/table.equiv.A.csv")
+equiv_B = pd.read_csv("./data/table.equiv.B.csv")
+equiv_C = pd.read_csv("./data/table.equiv.C.csv")
+equiv_Q = pd.read_csv("./data/table.equiv.Q.csv")
+equiv_R = pd.read_csv("./data/table.equiv.R.csv")
 
 equiv_dict = {"A":equiv_A,
 			"B":equiv_B,
@@ -61,8 +62,8 @@ def get_frequency(char_num, nmdp_5l, ethnics):#[["A",1], ["B",1]] 只考虑一�
 							    'AFA': [selected_data.loc[:,'AFA'].sum()],
 							    'HIS': [selected_data.loc[:,'HIS'].sum()],
 							    'API': [selected_data.loc[:,'API'].sum()]})
-	print(df_ethnics)
-	print(df_freq)
+	#print(df_ethnics)
+	#print(df_freq)
 	df_weighted_freq=df_freq.mul(df_ethnics)#multiply antigen frequencies with ethnics frequencies
 	return df_weighted_freq
 
@@ -77,39 +78,39 @@ def find_equiv(table_equiv,antigen):
 		if char not in antigen_map:
 			antigen_map[char] = []
 		antigen_map[char].append(num)
-		print("######",num)
+		#print("######",num)
 	antigen_char = sorted(antigen_map.keys())  #antigen_mao.keys(): put all dict keys into a list. sorted(), sort the list.
 	antigen_char_comb = []
 	for i in range(1,len(antigen_char)+1):
 		antigen_char_comb += get_combination(antigen_char,i)
 
 
-	print(antigen)
-	print()
-	print(antigen_char)
-	print()
-	print(antigen_char_comb)
-	print()
-	print(antigen_map)
-	print()
+	#print(antigen)
+	#print()
+	#print(antigen_char)
+	#print()
+	#print(antigen_char_comb)
+	#print()
+	#print(antigen_map)
+	#print()
 	char_num_equiv = []
 	char_num_comb = []
 	all_antigen = []
 	for char_comb in antigen_char_comb:
 		char_num_comb += get_char_num_comb(char_comb,antigen_map)
-	print("111",char_comb)
-	for char_num in char_num_comb:
-		print("###",char_num)
+	#print("111",char_comb)
+	#for char_num in char_num_comb:
+	#	print("###",char_num)
 	for char,num in antigen:#用list可能更好
 		if char == "A":
-			print("hahaha,",num)
-			print("hahaha,",char)
+			#print("hahaha,",num)
+			#print("hahaha,",char)
 			dict_equiv_a = equiv_dict["A"]
 			equiv_a_bool = dict_equiv_a["Ag"].isin([num])
 			equiv_a = dict_equiv_a[equiv_a_bool].dropna(axis=1)#equiv_a is a dataframe
 			char_num_equiv.append(equiv_a)
 			equiv_a = equiv_a.values.tolist()[0]
-			print(equiv_a)
+			#print(equiv_a)
 			if len(equiv_a) >= 1:
 				equiv_a = ["A" + str(int(x)) for x in equiv_a[2:]]
 				all_antigen.extend(equiv_a) 
@@ -118,7 +119,7 @@ def find_equiv(table_equiv,antigen):
 				all_antigen.extend(equiv_a) 
 
 			#equiv_a = ["A" + str(x) for x in equiv_a]
-			print(equiv_a)
+			#print(equiv_a)
 			#print(all_antigen)
 			
 			
@@ -139,7 +140,7 @@ def find_equiv(table_equiv,antigen):
 				equiv_b = [char + str(num)]
 				all_antigen.extend(equiv_b) 
 			equiv_str_b = []
-			print(equiv_b)
+			#print(equiv_b)
 
 		if char == "C":
 			dict_equiv_c = equiv_dict["C"]
@@ -155,7 +156,7 @@ def find_equiv(table_equiv,antigen):
 				equiv_c = [char + str(num)]
 				all_antigen.extend(equiv_c)  
 			equiv_str_c = []
-			print(equiv_c)
+			#print(equiv_c)
 
 		if char == "Q":
 			dict_equiv_q = equiv_dict["Q"]
@@ -172,7 +173,7 @@ def find_equiv(table_equiv,antigen):
 				all_antigen.extend(equiv_q) 
 			
 			equiv_str_q = []
-			print(equiv_q)
+			#print(equiv_q)
 
 		if char == "R":
 			dict_equiv_r = equiv_dict["R"]
@@ -187,9 +188,9 @@ def find_equiv(table_equiv,antigen):
 				equiv_r = [char + str(num)]
 				all_antigen.extend(equiv_r)  
 			equiv_str_r = []
-			print(equiv_r)
-	print()
-	print("final_antigen,",all_antigen)
+			#print(equiv_r)
+	#print()
+	#print("final_antigen,",all_antigen)
 	#sum_list = equiv_a + equiv_b + equiv_c + equiv_q + equiv_r
 	#print(sum_list)
 	
@@ -204,19 +205,19 @@ def find_equiv(table_equiv,antigen):
 	antigen2 = all_antigen
 	antigen2 = ','.join(antigen2)
 	antigen2 = str(antigen2)
-	print(antigen2)
+	#print(antigen2)
 	return antigen2
 	
 
 	
 def func(nmdp_5l, antigen, ethnics):
-	print(antigen)
+	#print(antigen)
 	antigen = antigen.replace("DQ","Q")
 	antigen = antigen.replace("DR","R")
 	antigen = antigen.split(",")
 	antigen = [split_char_num(char_num) for char_num in antigen]
-	print("####")
-	print(type(antigen))
+	#print("####")
+	#print(type(antigen))
 	# antigen = [["A",1], ["A",2], ... ,["DR",18]]
 	antigen_map = {}
 	for char,num in antigen:#把字母下面的数字找到，放到antigen_map字典里面.find out all number under character and put them into antigen_map
@@ -227,14 +228,14 @@ def func(nmdp_5l, antigen, ethnics):
 	antigen_char_comb = []
 	for i in range(1,len(antigen_char)+1):
 		antigen_char_comb += get_combination(antigen_char,i)
-	print(antigen)
-	print()
-	print(antigen_char)
-	print()
-	print(antigen_char_comb)
-	print()
-	print(antigen_map)
-	print()
+	#print(antigen)
+	#print()
+	#print(antigen_char)
+	#print()
+	#print(antigen_char_comb)
+	#print()
+	#print(antigen_map)
+	#print()
 	L1 = []
 	L2 = []
 	L3 = []
@@ -244,48 +245,48 @@ def func(nmdp_5l, antigen, ethnics):
 	for char_comb in antigen_char_comb:
 		char_num_comb += get_char_num_comb(char_comb,antigen_map)
 	for char_num in char_num_comb:
-		print(char_num)
-		print(get_frequency(char_num, nmdp_5l, ethnics))
+		#print(char_num)
+		#print(get_frequency(char_num, nmdp_5l, ethnics))
 		if len(char_num) == 1:
 			#print(len(char_num))
 			S1 = get_frequency(char_num, nmdp_5l, ethnics).sum(axis=1)
 			L1.append(S1)
-			print("S1=",S1)
+			#print("S1=",S1)
 		if len(char_num) ==2:
 			#print(len(char_num))
 			S2 = get_frequency(char_num, nmdp_5l , ethnics).sum(axis=1)
 			L2.append(S2)
-			print("S2=",S2)
+			#print("S2=",S2)
 			
 		if len(char_num) ==3:
 			#print(len(char_num))
 			
 			S3 = get_frequency(char_num,nmdp_5l,ethnics).sum(axis=1)
 			L3.append(S3)
-			print("S3=",S3)
+			#print("S3=",S3)
 		if len(char_num) ==4:
 			#print(len(char_num))
 			
 			S4 = get_frequency(char_num,nmdp_5l,ethnics).sum(axis=1)
 			L4.append(S4)
-			print("S4=",S4)
+			#print("S4=",S4)
 		if len(char_num) ==5:
 			#print(len(char_num))
 			
 			S5 = get_frequency(char_num,nmdp_5l,ethnics).sum(axis=1)
 			L5.append(S5)
-			print("S5=",S5)	
+			#print("S5=",S5)	
 
 	T1 = sum(L1)
-	print("T1:",T1)
+	#print("T1:",T1)
 	T2 = sum(L2)
-	print("T2:",T2)
+	#print("T2:",T2)
 	T3 = sum(L3)
-	print("T3:",T3)
+	#print("T3:",T3)
 	T4 = sum(L4)
-	print("T4:",T4)
+	#print("T4:",T4)
 	T5 = sum(L5)
-	print("T5:",T5)
+	#print("T5:",T5)
 
 	CPRA = (1-(1-T1+T2-T3+T4-T5)**2)*100
 	print("CPRA:",CPRA)
@@ -294,9 +295,9 @@ def func(nmdp_5l, antigen, ethnics):
 
 if __name__=="__main__":
 	
-	antigen_5l = pd.read_csv("/Users/muwuxu/Documents/Loran_Gragert/cpra_python/data/table.5l.nmdp.ag.csv")
-	ethnics = pd.read_csv("/Users/muwuxu/Documents/Loran_Gragert/cpra_python/data/ethnic.weights_python.csv")
-	func(antigen_5l, find_equiv(equiv_dict,"B4,A1,A2,C5,DQ15,DR4"), ethnics)
-
+	antigen_5l = pd.read_csv("./data/table.5l.nmdp.ag.csv")
+	ethnics = pd.read_csv("./data/ethnic.weights_python.csv")
+	func(antigen_5l, find_equiv(equiv_dict,"A1,B7,C3,DQ4,DR5"), ethnics)
+	print(time.time()-t0, "seconds")
 
 
