@@ -1,4 +1,4 @@
-#allele equivalences, check out all the antigen2 
+#allele equivalences, check out all the antigen2.
 import pandas as pd
 import time
 
